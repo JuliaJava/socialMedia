@@ -1,5 +1,6 @@
 package com.itgirls.socialMedia.repository;
 
+import com.itgirls.socialMedia.entity.Follower;
 import com.itgirls.socialMedia.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -7,10 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface FollowerRepository extends JpaRepository<Follower, Long> {
 
-    User getUserById(Long id);
+    List<Follower> getFollowerByFollowerId(User user);
 
-    List<User> getAllByNameOrderByIdDesc(String name);
+    List<Follower> getFollowerByFolloweeId(User user);
 
 }

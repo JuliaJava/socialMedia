@@ -1,33 +1,25 @@
 package com.itgirls.socialMedia.controller;
 
-import com.itgirls.socialMedia.models.User;
+import com.itgirls.socialMedia.dto.UserDto;
+import com.itgirls.socialMedia.entity.User;
 import com.itgirls.socialMedia.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 public class UserController {
 
-    public UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService;
 
     @GetMapping("/users")
     public List<User> getAllUsers() {
@@ -37,8 +29,6 @@ public class UserController {
     @GetMapping("/users/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
         try {
-            HashMap<String, String> mapa = new HashMap<>();
-
             return ResponseEntity.ok(userService.getUserById(id));
         } catch (EmptyResultDataAccessException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User doesn't exist");
@@ -52,8 +42,12 @@ public class UserController {
         return userService.addNewUser(user);
     }
 
-    @DeleteMapping("/users")
+    @GetMapping("/users/followers")
+    public List<UserDto> getAllUsersWithFollowers() {
+        return userService.getAllUsersWithFollowers();
+    }
+/*    @DeleteMapping("/users")
     public String deleteUser(@RequestParam String name) {
         return "Delete user " + name;
-    }
+    }*/
 }

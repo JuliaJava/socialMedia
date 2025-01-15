@@ -1,0 +1,18 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.23.xsd">
+
+    <changeSet id="create_table_follower" author="Julia_Sheveleva">
+       <sql>
+           create table if not exists follower(
+               id bigserial primary key,
+               follower_id bigint REFERENCES social_user(user_id),
+               followee_id bigint REFERENCES social_user(user_id),
+               followed_dt timestamp
+               )
+       </sql>
+    </changeSet>
+
+</databaseChangeLog>
