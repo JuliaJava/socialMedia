@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    User getUserById(Long ids);
+    User getUserById(Long id);
 
     List<User> getAllByNameOrderByIdDesc(String name);
 
