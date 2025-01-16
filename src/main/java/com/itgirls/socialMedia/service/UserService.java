@@ -1,17 +1,26 @@
 package com.itgirls.socialMedia.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itgirls.socialMedia.Specification.UserSpecification;
 import com.itgirls.socialMedia.dto.UserDto;
 import com.itgirls.socialMedia.entity.Follower;
 import com.itgirls.socialMedia.entity.User;
 import com.itgirls.socialMedia.repository.FollowerRepository;
 import com.itgirls.socialMedia.repository.UserRepository;
+import io.micrometer.common.util.StringUtils;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Service
 @Slf4j
@@ -21,6 +30,9 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private FollowerRepository followerRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     public User addNewUser(User user) {
         return userRepository.save(user);
@@ -52,5 +64,23 @@ public class UserService {
             usersDto.add(userDto);
         }
         return usersDto;
+    }
+
+    public long getUsersCount() {
+        log.info("Get count of all users");
+        return userRepository.getUsersCount();
+    }
+
+    public List<User> getUsersByNameOrEmail(String name, String email) {
+
+        Specification<User> specification = Specification.where(null); //select * from User
+        if (StringUtils.isNotEmpty(name)) {
+            specification = specification.and(UserSpecification.hasName(name)); //select * from User + where email='Oleg@gmail.com'
+        }
+        if (StringUtils.isNotEmpty(email)) {
+            specification = specification.and(UserSpecification.hasEmail(email));//select * from User + where email='Oleg@gmail.com' and name='Oleg'
+        }
+
+        return userRepository.findAll(specification);
     }
 }

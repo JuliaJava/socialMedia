@@ -46,4 +46,14 @@ public class FollowerController {
         return followerService.addNewFollower(Follower);
     }
 
+    @GetMapping("/followers/count")
+    public ResponseEntity<?> getFollowersCount() {
+        try {
+            return ResponseEntity.ok(followerService.getFollowersCount());
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("FollowerDto doesn't exist");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Exception while get FollowerDto by id");
+        }
+    }
 }

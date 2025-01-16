@@ -48,4 +48,9 @@ public class FollowerService {
         return followerRepository.getFollowerByFollowerId(user);
     }
 
+    public List<Object> getFollowersCount() {
+        log.info("Get count of followers");
+        List<Object> followers = followerRepository.getFollowersCount();
+        return followers;
+    }
 }

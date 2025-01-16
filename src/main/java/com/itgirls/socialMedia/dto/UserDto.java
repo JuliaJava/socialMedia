@@ -18,5 +18,6 @@ public class UserDto {
     public String name;
     public String email;
     public List<Follower> followerList;
+    public long countFollowers;
 
 }
