@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -82,5 +83,22 @@ public class UserService {
         }
 
         return userRepository.findAll(specification);
+    }
+
+    public User updateUser(UserDto userDto) {
+        User user = userRepository.getUserById(userDto.getId());
+        user.setEmail(StringUtils.isNotEmpty(userDto.getEmail()) ? userDto.getEmail() : user.getEmail());
+        Optional.ofNullable(userDto.getName()).ifPresent(user::setName);
+        return userRepository.save(user);
+    }
+
+    public String deleteUser(Long id) {
+        User user = userRepository.getUserById(id);
+        try {
+            userRepository.delete(user);
+            return "User with id " + id + " was deleted";
+        } catch (Exception e) {
+            return "User with id " + id + " couldn't delete";
+        }
     }
 }

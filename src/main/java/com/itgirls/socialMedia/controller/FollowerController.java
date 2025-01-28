@@ -42,8 +42,8 @@ public class FollowerController {
     }
 
     @PostMapping("/followers")
-    public Follower addNewFollower(@RequestBody Follower Follower) {
-        return followerService.addNewFollower(Follower);
+    public Follower addNewFollower(@RequestBody FollowerDto followerDto) {
+        return followerService.addNewFollower(followerDto);
     }
 
     @GetMapping("/followers/count")

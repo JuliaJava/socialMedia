@@ -22,7 +22,12 @@ public class FollowerService {
     @Autowired
     private UserRepository userRepository;
 
-    public Follower addNewFollower(Follower follower) {
+    public Follower addNewFollower(FollowerDto followerDto) {
+        User followerUser = userRepository.getUserById(followerDto.getFollowerId());
+        User followeeUser = userRepository.getUserById(followerDto.getFolloweeId());
+        Follower follower = new Follower();
+        follower.setFollowerId(followerUser);
+        follower.setFolloweeId(followeeUser);
         return followerRepository.save(follower);
     }
 
