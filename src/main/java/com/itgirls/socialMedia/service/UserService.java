@@ -9,12 +9,9 @@ import com.itgirls.socialMedia.repository.FollowerRepository;
 import com.itgirls.socialMedia.repository.UserRepository;
 import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -32,26 +29,18 @@ public class UserService {
     @Autowired
     private FollowerRepository followerRepository;
 
-    @Autowired
-    private EntityManager entityManager;
-
     public User addNewUser(User user) {
         return userRepository.save(user);
     }
 
     public List<User> getAllUsers() {
         log.info("Get all users");
-        return userRepository.findAll();
+        return userRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     public User getUserById(Long id) {
         System.out.println("Get user with id " + id);
         return userRepository.getUserById(id);
-    }
-
-    public User getUserByName(String userName) {
-        System.out.println("Get user by name " + userName);
-        return null;
     }
 
     public List<UserDto> getAllUsersWithFollowers() {
