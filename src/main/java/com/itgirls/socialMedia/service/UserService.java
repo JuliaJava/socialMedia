@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -28,9 +29,15 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private FollowerRepository followerRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    public User addNewUser(User user) {
-        return userRepository.save(user);
+    public UserDto addNewUser(User user) {
+        String passwordEncode = passwordEncoder.encode(user.getPassword());
+        user.setPassword(passwordEncode);
+        User newUser = userRepository.save(user);
+        UserDto userDto = new ObjectMapper().convertValue(newUser, UserDto.class);
+        return userDto;
     }
 
     public List<User> getAllUsers() {

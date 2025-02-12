@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -53,9 +54,9 @@ public class UserController {
         }
     }
 
-    @PostMapping()
-    public User addNewUser(@RequestBody User user) {
-        return userService.addNewUser(user);
+    @PostMapping("")
+    public ResponseEntity<?> addNewUser(@RequestBody User user) {
+        return ResponseEntity.ok(userService.addNewUser(user));
     }
 
     @GetMapping("/followers")

@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     @Query("Select count(id) from User")
     long getUsersCount();
+
+    User findUserByEmail(String email);
 }

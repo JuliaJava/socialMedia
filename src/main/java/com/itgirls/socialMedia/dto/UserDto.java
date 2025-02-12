@@ -1,5 +1,6 @@
 package com.itgirls.socialMedia.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.itgirls.socialMedia.entity.Follower;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDto {
 
     public Long id;
@@ -19,5 +21,6 @@ public class UserDto {
     public String email;
     public List<Follower> followerList;
     public long countFollowers;
+    private String role;
 
 }
