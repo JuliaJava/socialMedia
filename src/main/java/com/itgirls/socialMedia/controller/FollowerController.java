@@ -3,6 +3,8 @@ package com.itgirls.socialMedia.controller;
 import com.itgirls.socialMedia.dto.FollowerDto;
 import com.itgirls.socialMedia.entity.Follower;
 import com.itgirls.socialMedia.service.FollowerService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@Tag(name = "Подписчики", description = "Управление списком подписчиков")
 public class FollowerController {
 
     public FollowerService followerService;
@@ -26,6 +29,8 @@ public class FollowerController {
     }
 
     @GetMapping("/followers")
+    @Operation(summary = "Получение списка пользователей", description = "Позволяет получить список всех пользователей" +
+            "и их подписчиков")
     public List<FollowerDto> getAllFollowers() {
         return followerService.getAllFollowers();
     }

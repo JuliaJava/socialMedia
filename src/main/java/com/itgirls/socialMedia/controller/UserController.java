@@ -3,6 +3,7 @@ package com.itgirls.socialMedia.controller;
 import com.itgirls.socialMedia.dto.UserDto;
 import com.itgirls.socialMedia.entity.User;
 import com.itgirls.socialMedia.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,9 +21,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,7 +36,7 @@ public class UserController {
     @GetMapping()
     public String getAllUsers(@RequestParam(required = false) String name,
                                   @RequestParam(required = false) String email,
-                                  Model model) {
+                              Model model) {
 
         if (StringUtils.isEmpty(name) && StringUtils.isEmpty(email)) {
             List<User> users = userService.getAllUsers();
@@ -55,7 +59,15 @@ public class UserController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> addNewUser(@RequestBody User user) {
+    public ResponseEntity<?> addNewUser(@Valid @RequestBody User user, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            result.getAllErrors().forEach(objectError -> {
+                FieldError fieldError = (FieldError) objectError;
+                errors.put(fieldError.getField(), objectError.getDefaultMessage());
+            });
+            return ResponseEntity.badRequest().body(errors);
+        }
         return ResponseEntity.ok(userService.addNewUser(user));
     }
 
@@ -70,7 +82,15 @@ public class UserController {
     }
 
     @PutMapping("")
-    public ResponseEntity<?> updateUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UserDto userDto, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            result.getAllErrors().forEach(objectError -> {
+                FieldError fieldError = (FieldError) objectError;
+                errors.put(fieldError.getField(), objectError.getDefaultMessage());
+            });
+            return ResponseEntity.badRequest().body(errors);
+        }
         return ResponseEntity.ok().body(userService.updateUser(userDto));
     }
 
