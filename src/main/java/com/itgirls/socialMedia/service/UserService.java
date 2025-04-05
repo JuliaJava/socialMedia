@@ -11,6 +11,7 @@ import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -47,7 +48,13 @@ public class UserService {
 
     public User getUserById(Long id) {
         System.out.println("Get user with id " + id);
-        return userRepository.getUserById(id);
+        try {
+            User user = userRepository.getUserById(id);
+            return user;
+        } catch (Exception e) {
+            log.error("Error", e.getCause());
+            throw new EmptyResultDataAccessException(1);
+        }
     }
 
     public List<UserDto> getAllUsersWithFollowers() {
