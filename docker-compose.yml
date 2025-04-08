@@ -1,0 +1,40 @@
+services:
+  app:
+    container_name: social-media
+    image: social-media:latest
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/socialMedia
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 11111
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+    networks:
+      - social-net
+
+  db:
+    container_name: postgres-db
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_DB: socialMedia
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 11111
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - social-net
+
+volumes:
+  pgdata:
+
+networks:
+  social-net:
+    driver: bridge
