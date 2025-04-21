@@ -24,10 +24,16 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                sh 'docker-compose up -d'
-            }
+        stage('Deploy to Kubernetes') {
+                    steps {
+                        script {
+                            sh "kubectl apply -f postgres-deployment.yaml"
+                            sh "kubectl apply -f postgres-service.yaml"
+                            sh "kubectl apply -f app-deployment.yaml"
+                            sh "kubectl apply -f app-service.yaml"
+                        }
+                    }
+
         }
     }
 }
