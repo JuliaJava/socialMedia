@@ -27,10 +27,10 @@ pipeline {
         stage('Deploy to Kubernetes') {
                     steps {
                         script {
-                            sh "kubectl apply -f postgres-deployment.yaml"
-                            sh "kubectl apply -f postgres-service.yaml"
-                            sh "kubectl apply -f app-deployment.yaml"
-                            sh "kubectl apply -f app-service.yaml"
+                            sh "kubectl apply -f /k8s/postgres-deployment.yaml"
+                            sh "kubectl apply -f /k8s/postgres-service.yaml"
+                            sh "kubectl apply -f /k8s/app-deployment.yaml"
+                            sh "kubectl apply -f /k8s/app-service.yaml"
                         }
                     }
 
