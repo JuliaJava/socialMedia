@@ -25,14 +25,21 @@ pipeline {
         }
 
         stage('Deploy to Kubernetes') {
-                    steps {
-                        script {
-                            sh "kubectl apply -f k8s/postgres-deployment.yaml"
-                            sh "kubectl apply -f k8s/postgres-service.yaml"
-                            sh "kubectl apply -f k8s/app-deployment.yaml"
-                            sh "kubectl apply -f k8s/app-service.yaml"
-                        }
+             steps {
+                    withCredentials([file(credentialsId: '111', variable: 'KUBECONFIG')]) {
+                        sh '''
+                            export KUBECONFIG=${KUBECONFIG}
+                            kubectl apply -f k8s/postgres-deployment.yaml
+                            kubectl apply -f k8s/postgres-service.yaml
+                            kubectl apply -f k8s/app-deployment.yaml
+                            kubectl apply -f k8s/app-service.yaml
+
+                            # Проверка статуса
+                            kubectl get pods
+                            kubectl get services
+                        '''
                     }
+                }
 
         }
     }
