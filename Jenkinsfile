@@ -31,7 +31,8 @@ pipeline {
                              mkdir -p ~/.kube
                              cp ${KUBECONFIG_FILE} ~/.kube/config
                              chmod 600 ~/.kube/config
-
+                             ln -s /home/julia/.minikube/ca.crt ~/.minikube/
+                             ln -s /home/julia/.minikube/profiles/minikube/client.* ~/.minikube/profiles/minikube/
                              kubectl apply -f k8s/postgres-deployment.yaml
                              kubectl apply -f k8s/postgres-service.yaml
                              kubectl apply -f k8s/app-deployment.yaml
