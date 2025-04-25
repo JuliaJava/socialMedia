@@ -5,6 +5,10 @@ pipeline {
         jdk 'jdk-21'
     }
 
+    environment {
+        SONAR_TOKEN = credentials('SonarQube1')
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -21,8 +25,8 @@ pipeline {
         stage('SonarQube') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'SonarQube-pwd', variable: 'sonarqubepwd')]) {
-                        sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=${sonarqubepwd}'
+                    withSonarQubeEnv('Sonar') {
+                        sh './mvnw sonar:sonar -Dsonar.projectKey=socialMedia -Dsonar.token=$SONAR_TOKEN'
                     }
                 }
             }
