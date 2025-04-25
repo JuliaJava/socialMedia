@@ -18,6 +18,16 @@ pipeline {
             }
         }
 
+        stage('SonarQube') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'SonarQube-pwd', variable: 'sonarqubepwd')]) {
+                        sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=${sonarqubepwd}'
+                    }
+                }
+            }
+        }
+
         stage('Docker Build') {
             steps {
                 sh 'docker build -t social-media:latest .'
