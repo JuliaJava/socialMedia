@@ -20,7 +20,7 @@ pipeline {
             steps{
                 script{
                     withSonarQubeEnv('Sonar'){
-                        sh './mvnw sonar:sonar -Dsonar.projectKey=socialMedia -Dsonar.token=$8SONAR_TOKEN'
+                        sh './mvnw sonar:sonar -Dsonar.projectKey=socialMedia -Dsonar.token=$SONAR_TOKEN'
                     }
                 }
             }
