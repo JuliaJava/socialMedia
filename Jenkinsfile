@@ -6,19 +6,13 @@ pipeline {
     }
 
     environment {
-        SONAR_TOKEN = credentials('SonarQube1')
+        SONAR_TOKEN = credentials('SonarQube2')
     }
 
     stages {
         stage('Checkout') {
             steps {
                 git 'https://github.com/JuliaJava/socialMedia.git'
-            }
-        }
-
-        stage('Build') {
-            steps {
-                sh './mvnw clean package'
             }
         }
 
@@ -29,6 +23,12 @@ pipeline {
                         sh './mvnw sonar:sonar -Dsonar.projectKey=socialMedia -Dsonar.token=$SONAR_TOKEN'
                     }
                 }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh './mvnw clean package'
             }
         }
 
