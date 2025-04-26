@@ -5,6 +5,7 @@ import com.itgirls.socialMedia.entity.Follower;
 import com.itgirls.socialMedia.entity.User;
 import com.itgirls.socialMedia.repository.FollowerRepository;
 import com.itgirls.socialMedia.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,11 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class FollowerService {
 
-    @Autowired
-    private FollowerRepository followerRepository;
-    @Autowired
-    private UserRepository userRepository;
+    private final FollowerRepository followerRepository;
+    private final UserRepository userRepository;
 
     public Follower addNewFollower(FollowerDto followerDto) {
         User followerUser = userRepository.getUserById(followerDto.getFollowerId());
